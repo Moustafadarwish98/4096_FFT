@@ -636,7 +636,6 @@ module fftmain(
   reg    r_br_started;
 
   // Simple state machine to ignore invalid data before the first valid frame
-  initial r_br_started = 1'b0;
   always @(posedge i_clk)
     if (i_reset)
       r_br_started <= 1'b0;
@@ -663,8 +662,6 @@ module fftmain(
   // FINAL OUTPUT REGISTRATION
   // ==========================================================================
   // Registers the outputs for timing closure before leaving the module.
-  initial
-    o_sync  = 1'b0;
   always @(posedge i_clk)
     if (i_reset)
       o_sync  <= 1'b0;
