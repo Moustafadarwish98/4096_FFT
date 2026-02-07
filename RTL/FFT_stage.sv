@@ -35,6 +35,14 @@ module  fftstage #(
     // Optimization Target: Paper Sec IV.B suggests compressing this table 
     // to store only 0-pi/4 and using logic to reconstruct the rest[cite: 424, 685].
     parameter   COEFFILE="cmem_o8192.hex",
+    /*2. The Technical Reason: "Double Clock" ResolutionThe architecture you are using is a Double Clock FFT 
+    (processing 2 samples per clock cycle).In a standard (single-clock) Radix-2 FFT, the first stage (4096 points) splits data 
+    into two groups and multiplies by Twiddle Factors $W_{4096}^k$.However, because this hardware processes two inputs at once 
+    (Even and Odd streams in parallel), the internal indexing logic is more complex. The lookup table needs to support the 
+    addressing scheme of two parallel butterflies.To avoid aliasing errors and ensure the hardware can grab the correct 
+    Sine/Cosine values for both the "Left" and "Right" data streams simultaneously, the generator creates a table with 
+    double the resolution.Therefore, for the 4096-point stage, it generates a table that has the resolution of 
+    an 8192-point circle ($0$ to $2\pi$ divided into 8192 steps), even though you assume you only need 4096 steps.*/
 
     localparam [0:0]    ZERO_ON_IDLE = 1'b0
   ) (
