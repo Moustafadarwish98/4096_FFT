@@ -39,7 +39,7 @@ module  longbimpy #(
         // ====================================================================
         // 2. PORTS
         // ====================================================================
-        input   wire            i_clk, i_ce,
+        input   wire            i_clk, i_clk_enable,
         input   wire    [(IAW-1):0] i_a_unsorted,
         input   wire    [(IBW-1):0] i_b_unsorted,
         output  reg [(AW+BW-1):0]   o_r
@@ -106,14 +106,14 @@ module  longbimpy #(
         // We calculate the absolute value and pad the top bit with 0 
         // to make the total width even (IW).
         always @(posedge i_clk)
-        if (i_ce)
+        if (i_clk_enable)
             // Ternary Op: If MSB is 1 (negative), negate i_a. Else keep i_a.
             u_a <= { 1'b0, (i_a[AW-1])?(-i_a):(i_a) };
             
     end else begin : ABS_A
         // Case: No Padding Needed (AW was even).
         always @(posedge i_clk)
-        if (i_ce)
+        if (i_clk_enable)
             u_a <= (i_a[AW-1])?(-i_a):(i_a);
             
     end end endgenerate
@@ -125,7 +125,7 @@ module  longbimpy #(
     // We also calculate the final sign bit (A_sign XOR B_sign).
     
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
     begin : ABS_B
         // Ternary Op: If B is negative (MSB=1), negate it. Else keep B.
         u_b <= (i_b[BW-1])?(-i_b):(i_b);
@@ -150,7 +150,7 @@ module  longbimpy #(
     bimpy   #(
         .BW(BW) // Width of B
     ) lmpy_0(
-        .i_clk(i_clk), .i_reset(1'b0), .i_ce(i_ce),
+        .i_clk(i_clk), .i_reset(1'b0), .i_clk_enable(i_clk_enable),
         .i_a(u_a[(  LUTB-1):   0]), // u_a[1:0]
         .i_b(u_b),
         .o_r(pr_a)                  // Result A
@@ -161,7 +161,7 @@ module  longbimpy #(
     bimpy   #(
         .BW(BW) // Width of B
     ) lmpy_1(
-        .i_clk(i_clk), .i_reset(1'b0), .i_ce(i_ce),
+        .i_clk(i_clk), .i_reset(1'b0), .i_clk_enable(i_clk_enable),
         .i_a(u_a[(2*LUTB-1):LUTB]), // u_a[3:2]
         .i_b(u_b),
         .o_r(pr_b)                  // Result B
@@ -171,7 +171,7 @@ module  longbimpy #(
     // 7. PIPELINE MANAGEMENT (Carrying values forward)
     // ====================================================================
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
     begin
         // Pass the REMAINING bits of 'u_a' down to the next stage.
         // We just consumed 4 bits (2*LUTB), so start from bit 4.
@@ -193,7 +193,7 @@ module  longbimpy #(
     // by 2 bits (LUTB) because it corresponds to u_a[3:2].
     
     always @(posedge i_clk) // One clk after p[0],p[1] become valid
-    if (i_ce)
+    if (i_clk_enable)
         acc[0] <= { {(IW-LUTB){1'b0}}, pr_a }          // Product A (No shift)
                 + { {(IW-(2*LUTB)){1'b0}}, pr_b, {(LUTB){1'b0}} }; // Product B (Shift left 2)
 
@@ -214,7 +214,7 @@ module  longbimpy #(
             initial r_b[k+1] = 0;
             
             always @(posedge i_clk)
-            if (i_ce)
+            if (i_clk_enable)
             begin
                 // Shift r_a right by 2 bits (LUTB) to expose the next chunk
                 // for the next stage.
@@ -246,7 +246,7 @@ module  longbimpy #(
             bimpy #(
                 .BW(BW)
             ) genmpy(
-                .i_clk(i_clk), .i_reset(1'b0), .i_ce(i_ce),
+                .i_clk(i_clk), .i_reset(1'b0), .i_clk_enable(i_clk_enable),
                 .i_a(r_a[k][(LUTB-1):0]), // The bottom 2 bits of current A
                 .i_b(r_b[k]),             // Current B
                 .o_r(genp)
@@ -263,7 +263,7 @@ module  longbimpy #(
             
             initial acc[k+1] = 0;
             always @(posedge i_clk)
-            if (i_ce)
+            if (i_clk_enable)
                 acc[k+1] <= acc[k] + { {(IW-LUTB*(k+3)){1'b0}}, // Zero padding top
                                        genp,                    // The value
                                        {(LUTB*(k+2)){1'b0}} };  // The Left Shift
@@ -286,7 +286,7 @@ module  longbimpy #(
     // Capture the final result into the output register.
     // We truncate to the requested output width (AW+BW).
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
         o_r <= w_r[(AW+BW-1):0];
 
 

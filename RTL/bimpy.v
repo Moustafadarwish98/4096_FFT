@@ -17,7 +17,7 @@ module  bimpy #(
         parameter   BW=18, // Width of the large input (Input B)
         localparam  LUTB=2 // Width of the small input (Input A) - Fixed at 2
     ) (
-        input   wire            i_clk, i_reset, i_ce,
+        input   wire            i_clk, i_reset, i_clk_enable,
         input   wire    [(LUTB-1):0]    i_a, // The 2-bit Multiplier
         input   wire    [(BW-1):0]  i_b, // The N-bit Multiplicand
         output  reg [(BW+LUTB-1):0] o_r  // Result (Width = N + 2)
@@ -63,7 +63,7 @@ module  bimpy #(
     always @(posedge i_clk)
     if (i_reset)
         o_r <= 0;
-    else if (i_ce)
+    else if (i_clk_enable)
         o_r <= w_r + { c, 2'b0 };
 
 endmodule

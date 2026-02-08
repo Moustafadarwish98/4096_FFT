@@ -69,7 +69,7 @@ module  butterfly #(
         localparam  MPYREMAINDER = MPYDELAY - CKPCE*(MPYDELAY/CKPCE)
     ) (
         // --- Ports ---
-        input   wire                        i_clk, i_reset, i_ce,
+        input   wire                        i_clk, i_reset, i_clk_enable,
         input   wire    [(2*CWIDTH-1):0]    i_coef,         // Twiddle (Real+Imag)
         input   wire    [(2*IWIDTH-1):0]    i_left, i_right,// Inputs (Real+Imag)
         
@@ -182,7 +182,7 @@ module  butterfly #(
     // This block performs the first two steps of the math pipeline.
     // r_left, r_right, r_coef, r_sum_[r|i], r_dif_[r|i], r_coef_2
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
     begin
         // --- Pipeline Stage 1: Input Latching ---
         // Isolates the internal logic from external routing delays.
@@ -212,7 +212,7 @@ module  butterfly #(
     always @(posedge i_clk)
     if (i_reset)
         fifo_addr <= 0;
-    else if (i_ce)
+    else if (i_clk_enable)
         // Increment Write Pointer linearly
         fifo_addr <= fifo_addr + 1;
     // ========================================================================
@@ -221,7 +221,7 @@ module  butterfly #(
     // Stores the (Real, Imag) Sum result into the delay memory.
     // This will be read back later using 'fifo_read_addr'.
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
         fifo_left[fifo_addr] <= { r_sum_r, r_sum_i };
 	// Notes
 	// {{{
@@ -288,7 +288,7 @@ module  butterfly #(
             .IBW(IWIDTH+2)   // Input B Width (Padded)
         ) p1(
             .i_clk(i_clk), 
-            .i_ce(i_ce),
+            .i_clk_enable(i_clk_enable),
             // Sign-extend Coeff Real
             .i_a_unsorted({ir_coef_r[CWIDTH-1], ir_coef_r}), 
             // Sign-extend Data Real
@@ -306,7 +306,7 @@ module  butterfly #(
             .IBW(IWIDTH+2)   // Input B Width (Padded to match P3)
         ) p2(
             .i_clk(i_clk), 
-            .i_ce(i_ce),
+            .i_clk_enable(i_clk_enable),
             // Sign-Extension:
             // Like P1, we manually extend the inputs by 1 bit.
             // Why? P3 (below) uses sums (A+B), which are naturally 1 bit wider.
@@ -327,7 +327,7 @@ module  butterfly #(
             .IBW(IWIDTH+2)
         ) p3(
             .i_clk(i_clk), 
-            .i_ce(i_ce),
+            .i_clk_enable(i_clk_enable),
             // Inputs:
             // These inputs (p3c_in, p3d_in) were calculated in the previous step.
             // Since they are sums, they are already "native" width (W+1).
@@ -382,8 +382,8 @@ module  butterfly #(
         always @(posedge i_clk)
         if (i_reset)
             ce_phase <= 1'b0;
-        else if (i_ce)
-            // When new data arrives (i_ce=1), we start the phase sequence.
+        else if (i_clk_enable)
+            // When new data arrives (i_clk_enable=1), we start the phase sequence.
             ce_phase <= 1'b1;
         else
             // Otherwise, reset to 0 (ready for next sample).
@@ -394,12 +394,12 @@ module  butterfly #(
         // C. Multiplier Valid Signal
         // --------------------------------------------------------------------
         // The shared multiplier must run on BOTH cycles.
-        // Cycle A: Triggered by 'i_ce' (New Data).
+        // Cycle A: Triggered by 'i_clk_enable' (New Data).
         // Cycle B: Triggered by 'ce_phase' (The second slot).
         
         reg mpy_pipe_v;
         always @(*)
-            mpy_pipe_v = (i_ce)||(ce_phase);
+            mpy_pipe_v = (i_clk_enable)||(ce_phase);
 
 
         // --------------------------------------------------------------------
@@ -427,7 +427,7 @@ module  butterfly #(
             mpy_cof_sum <= ir_coef_i + ir_coef_r;
             mpy_dif_sum <= r_dif_r + r_dif_i;
 
-        end else if (i_ce)
+        end else if (i_clk_enable)
         begin
             // --- PHASE 0 (Cycle A Logic) ---
             // New data has arrived and is being processed (Upper slot used).
@@ -492,7 +492,7 @@ module  butterfly #(
         always @(posedge i_clk)
         if (i_reset)
             mpy_state <= 0;
-        else if (i_ce)
+        else if (i_clk_enable)
             // When new data arrives, reset to State 1 (001)
             mpy_state <= 3'b001;
         else
@@ -504,7 +504,7 @@ module  butterfly #(
         // 3. INPUT MULTIPLEXING LOGIC
         // --------------------------------------------------------------------
         always @(posedge i_clk)
-        if (i_ce) 
+        if (i_clk_enable) 
         begin
             // --- STATE 1 SETUP (For P1) ---
             mpy_pipe_c <= { {(1){1'b0}}, ir_coef_r };
@@ -532,14 +532,14 @@ module  butterfly #(
         // 4. MULTIPLIER INSTANTIATION
         // --------------------------------------------------------------------
         always @(*)
-            mpy_pipe_v = (i_ce) || (mpy_state[0]) || (mpy_state[1]);
+            mpy_pipe_v = (i_clk_enable) || (mpy_state[0]) || (mpy_state[1]);
 
         longbimpy #(
             .IAW(CWIDTH+1), 
             .IBW(IWIDTH+2)
         ) mpy0(
             .i_clk(i_clk), 
-            .i_ce(mpy_pipe_v),
+            .i_clk_enable(mpy_pipe_v),
             .i_a_unsorted(mpy_pipe_c),
             .i_b_unsorted(mpy_pipe_d),
             .o_r(longmpy)
@@ -558,7 +558,7 @@ module  butterfly #(
             pipe_state_1 <= 0; 
             pipe_state_2 <= 0;
         end else if (mpy_pipe_v) begin
-            pipe_state_0 <= { pipe_state_0[MPYDELAY-2:0], (i_ce) };
+            pipe_state_0 <= { pipe_state_0[MPYDELAY-2:0], (i_clk_enable) };
             pipe_state_1 <= { pipe_state_1[MPYDELAY-2:0], mpy_state[0] };
             pipe_state_2 <= { pipe_state_2[MPYDELAY-2:0], mpy_state[1] };
         end
@@ -613,7 +613,7 @@ module  butterfly #(
         always @(posedge i_clk)
         if (i_reset)
             ce_phase <= 3'b011;
-        else if (i_ce)
+        else if (i_clk_enable)
             ce_phase <= 3'b000; // Reset to 0 on new data
         else if (ce_phase != 3'b011)
             ce_phase <= ce_phase + 1'b1; // Increment 0->1->2->3
@@ -621,7 +621,7 @@ module  butterfly #(
         // Valid signal for the multiplier
         reg mpy_pipe_v;
         always @(*)
-            mpy_pipe_v = (i_ce)||(ce_phase < 3'b010);
+            mpy_pipe_v = (i_clk_enable)||(ce_phase < 3'b010);
 
         // --------------------------------------------------------------------
         // C. Data Loading & Shifting
@@ -667,7 +667,7 @@ module  butterfly #(
         longbimpy #(
             .IAW(CWIDTH+1), .IBW(IWIDTH+2)
         ) mpy(
-            .i_clk(i_clk), .i_ce(mpy_pipe_v),
+            .i_clk(i_clk), .i_clk_enable(mpy_pipe_v),
             .i_a_unsorted(mpy_pipe_vc),
             .i_b_unsorted(mpy_pipe_vd),
             .o_r(mpy_pipe_out)
@@ -683,7 +683,7 @@ module  butterfly #(
         always @(posedge i_clk)
         if (MPYREMAINDER == 0)
         begin
-            if (i_ce) 
+            if (i_clk_enable) 
                 // Capture P2 (It's actually the previous sample's P2 here due to wrapping)
                 rp_two   <= mpy_pipe_out;
             else if (ce_phase == 3'b000)
@@ -702,10 +702,10 @@ module  butterfly #(
         else if (MPYREMAINDER == 1)
         begin
             // Case 1: Offset by 1 cycle.
-            // When 'i_ce' is high (Phase 0), the multiplier finishes P1.
+            // When 'i_clk_enable' is high (Phase 0), the multiplier finishes P1.
             // When Phase is 0 (Cycle 2), the multiplier finishes P2.
             // When Phase is 1 (Cycle 3), the multiplier finishes P3.
-            if (i_ce)
+            if (i_clk_enable)
                 rp_one   <= mpy_pipe_out;
             else if (ce_phase == 3'b000)
                 rp_two   <= mpy_pipe_out;
@@ -716,10 +716,10 @@ module  butterfly #(
         begin
             // Case 2: Offset by 2 cycles.
             // The sequence wraps around differently.
-            // i_ce (Phase 0) -> Captures P3 (from previous set!)
+            // i_clk_enable (Phase 0) -> Captures P3 (from previous set!)
             // Phase 0 -> Captures P1
             // Phase 1 -> Captures P2
-            if (i_ce)
+            if (i_clk_enable)
                 rp_three <= mpy_pipe_out;
             else if (ce_phase == 3'b000)
                 rp_one   <= mpy_pipe_out;
@@ -737,7 +737,7 @@ module  butterfly #(
         // before handing them off to the adder.
 
         always @(posedge i_clk)
-        if (i_ce)
+        if (i_clk_enable)
         begin
             // Buffer the values to align them.
             // rp2_... are the "Stage 2" delay registers.
@@ -817,18 +817,18 @@ module  butterfly #(
     
     // Round the Sum Path (Left/Top)
     convround #(CWIDTH+IWIDTH+3, OWIDTH, SHIFT+4)
-        do_rnd_left_r(i_clk, i_ce, left_sr, rnd_left_r);
+        do_rnd_left_r(i_clk, i_clk_enable, left_sr, rnd_left_r);
 
     convround #(CWIDTH+IWIDTH+3, OWIDTH, SHIFT+4)
-        do_rnd_left_i(i_clk, i_ce, left_si, rnd_left_i);
+        do_rnd_left_i(i_clk, i_clk_enable, left_si, rnd_left_i);
 
     // Round the Diff Path (Right/Bottom)
     // mpy_r and mpy_i are the results from the reconstruction step below.
     convround #(CWIDTH+IWIDTH+3, OWIDTH, SHIFT+4)
-        do_rnd_right_r(i_clk, i_ce, mpy_r, rnd_right_r);
+        do_rnd_right_r(i_clk, i_clk_enable, mpy_r, rnd_right_r);
 
     convround #(CWIDTH+IWIDTH+3, OWIDTH, SHIFT+4)
-        do_rnd_right_i(i_clk, i_ce, mpy_i, rnd_right_i);
+        do_rnd_right_i(i_clk, i_clk_enable, mpy_i, rnd_right_i);
 
 
     // ========================================================================
@@ -837,7 +837,7 @@ module  butterfly #(
     // This block runs parallel to the rounding logic above (pipeline stage).
     
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
     begin
         // --- Path A: The Sum (FIFO) ---
         // Retrieve the data we stored way back at the start.
@@ -866,7 +866,7 @@ module  butterfly #(
     always @(posedge i_clk)
     if (i_reset)
         aux_pipeline <= 0;
-    else if (i_ce)
+    else if (i_clk_enable)
         // Shift left: Discard MSB, shift in new LSB
         aux_pipeline <= { aux_pipeline[(AUXLEN-2):0], i_aux };
 
@@ -874,7 +874,7 @@ module  butterfly #(
     always @(posedge i_clk)
     if (i_reset)
         o_aux <= 1'b0;
-    else if (i_ce)
+    else if (i_clk_enable)
     begin
         // Output the MSB of the delay line
         o_aux <= aux_pipeline[AUXLEN-1];
