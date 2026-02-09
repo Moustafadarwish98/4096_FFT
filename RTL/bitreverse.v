@@ -3,7 +3,7 @@
 //
 //		i_clk	A running clock at whatever system speed is offered.
 //		i_reset	A synchronous reset signal, that resets all internals
-//		i_ce	If this is one, one input is consumed and an output
+//		i_clk_enable	If this is one, one input is consumed and an output
 //			is produced.
 //		i_in_0, i_in_1
 //			Two inputs to be consumed, each of width WIDTH.
@@ -63,7 +63,7 @@ module  bitreverse #(
         parameter       LGSIZE=5, // Log2 of FFT Size (e.g., 5 = 32 points)
         parameter       WIDTH=24  // Data Width
     ) (
-        input   wire            i_clk, i_reset, i_ce,
+        input   wire            i_clk, i_reset, i_clk_enable,
         // Two inputs per clock (Even and Odd samples)
         input   wire    [(2*WIDTH-1):0] i_in_0, i_in_1,
         
@@ -122,7 +122,7 @@ module  bitreverse #(
         iaddr <= 0;
         in_reset <= 1'b1; // We start in "Reset/Fill" mode
         o_sync <= 1'b0;
-    end else if (i_ce)
+    end else if (i_clk_enable)
     begin
         // Increment linear counter
         iaddr <= iaddr + 1'b1;
@@ -147,11 +147,11 @@ module  bitreverse #(
     // Bank is selected by iaddr[LGSIZE-1] implicitly.
     
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
         mem_e[iaddr] <= i_in_0; // Store Input 0
 
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
         mem_o[iaddr] <= i_in_1; // Store Input 1
 
     // ====================================================================
@@ -164,19 +164,19 @@ module  bitreverse #(
     // scatter the data between the Even and Odd memory banks.
     
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
         evn_out_0 <= mem_e[{!iaddr[LGSIZE-1], 1'b0, braddr}];
 
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
         evn_out_1 <= mem_e[{!iaddr[LGSIZE-1], 1'b1, braddr}];
 
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
         odd_out_0 <= mem_o[{!iaddr[LGSIZE-1], 1'b0, braddr}];
 
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
         odd_out_1 <= mem_o[{!iaddr[LGSIZE-1], 1'b1, braddr}];
 
     // ====================================================================
@@ -188,7 +188,7 @@ module  bitreverse #(
     // the MSB of the linear address minus the bank bit).
     
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
         adrz <= iaddr[LGSIZE-2]; // Delay by 1 clock to match memory latency
 
     // Select the final output

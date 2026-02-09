@@ -49,7 +49,7 @@ module  hwbfly #(
         // ====================================================================
         // 2. PORTS
         // ====================================================================
-        input   wire    i_clk, i_reset, i_ce,
+        input   wire    i_clk, i_reset, i_clk_enable,
         
         // Complex Inputs: Packed as {Real, Imaginary}
         input   wire    [(2*CWIDTH-1):0]    i_coef,  // Twiddle Factor
@@ -138,7 +138,7 @@ module  hwbfly #(
     begin
         r_aux <= 1'b0;
         r_aux_2 <= 1'b0;
-    end else if (i_ce)
+    end else if (i_clk_enable)
     begin
         // Clock 1: Capture Input
         r_aux <= i_aux;
@@ -154,7 +154,7 @@ module  hwbfly #(
     // Stage 2: Calculate Sum (A+B) and Difference (A-B).
     
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
     begin
         // --- CLOCK 1: Input Latching ---
         // Capture inputs into registers. This improves timing performance (Fmax)
@@ -192,7 +192,7 @@ module  hwbfly #(
     begin
         leftv  <= 0;
         leftvv <= 0;
-    end else if (i_ce)
+    end else if (i_clk_enable)
     begin
         // Delay Stage 1: Store Sum results + Sync Signal (r_aux_2)
         leftv <= { r_aux_2, r_sum_r, r_sum_i };
@@ -236,7 +236,7 @@ module  hwbfly #(
         // C. Pre-Calculation Stage (Clock 3)
         // --------------------------------------------------------------------
         always @(posedge i_clk)
-        if (i_ce)
+        if (i_clk_enable)
         begin
             // Setup P1 inputs: Real Coeff * Real Diff
             p1c_in <= ir_coef_r;
@@ -261,7 +261,7 @@ module  hwbfly #(
         // directly to the FPGA's dedicated hardware multipliers (DSP Slices).
         
         always @(posedge i_clk)
-        if (i_ce)
+        if (i_clk_enable)
         begin
             // Calculate Partial Products
             rp_one   <= p1c_in * p1d_in;   // DSP Slice #1
@@ -330,8 +330,8 @@ module  hwbfly #(
         always @(posedge i_clk)
         if (i_reset)
             ce_phase <= 1'b1;
-        else if (i_ce)
-            // When new data arrives (i_ce=1), reset to Phase 0
+        else if (i_clk_enable)
+            // When new data arrives (i_clk_enable=1), reset to Phase 0
             ce_phase <= 1'b0;
         else
             // Otherwise toggle to Phase 1
@@ -340,7 +340,7 @@ module  hwbfly #(
         // Generate a "Valid" signal that is high for BOTH phases.
         // This ensures the shared multiplier runs on both clock cycles.
         always @(*)
-            mpy_pipe_v = (i_ce)||(!ce_phase);
+            mpy_pipe_v = (i_clk_enable)||(!ce_phase);
 
         // --------------------------------------------------------------------
         // C. Data Loading (Pre-Clock / Phase 1)
@@ -366,7 +366,7 @@ module  hwbfly #(
         // D. Pipeline Shifting (Phase 1 / Clock 2)
         // ====================================================================
         // In the previous chunk, we LOADED the registers when (!ce_phase).
-        // Now, when (i_ce) is high (start of next cycle), we SHIFT them.
+        // Now, when (i_clk_enable) is high (start of next cycle), we SHIFT them.
         //
         // Initial State: [ Real Part | Imag Part ]
         // Clock 1 Use:   Uses [Real Part] (Top of register)
@@ -374,7 +374,7 @@ module  hwbfly #(
         // New State:     [ Imag Part | 000000000 ]
         // Clock 2 Use:   Uses [Imag Part] (Now at Top of register)
         
-        else if (i_ce)
+        else if (i_clk_enable)
         begin
             // Shift Coeffs: Discard used Real part, move Imag part to top.
             mpy_pipe_c[2*(CWIDTH)-1:0] <= {
@@ -391,10 +391,10 @@ module  hwbfly #(
         // We use the '*' operator to infer DSP slices.
         // I have removed the formal verification code as requested.
 
-        // 1. Dedicated Multiplier (P3): Runs once per sample (i_ce).
+        // 1. Dedicated Multiplier (P3): Runs once per sample (i_clk_enable).
         //    Calculates (Sum Coeffs) * (Sum Data).
         always @(posedge i_clk)
-        if (i_ce) 
+        if (i_clk_enable) 
             longmpy <= mpy_cof_sum * mpy_dif_sum;
 
         // 2. Shared Multiplier (P1 & P2): Runs on both clocks (mpy_pipe_v).
@@ -417,15 +417,15 @@ module  hwbfly #(
             rp_one <= mpy_pipe_out;
 
         // Capture P2 (Imag * Imag)
-        // This result is valid after the second phase (i_ce).
+        // This result is valid after the second phase (i_clk_enable).
         always @(posedge i_clk)
-        if (i_ce) 
+        if (i_clk_enable) 
             rp_two <= mpy_pipe_out;
 
         // Capture P3 (Sum * Sum)
-        // This result is valid after the second phase (i_ce).
+        // This result is valid after the second phase (i_clk_enable).
         always @(posedge i_clk)
-        if (i_ce) 
+        if (i_clk_enable) 
             rp_three<= longmpy;
 
         // --- Synchronization ---
@@ -433,7 +433,7 @@ module  hwbfly #(
         // We register it one more time ('rp2_one') so that all three values
         // change on the exact same clock edge.
         always @(posedge i_clk)
-        if (i_ce)
+        if (i_clk_enable)
             rp2_one <= rp_one;
 
         // ====================================================================
@@ -498,7 +498,7 @@ module  hwbfly #(
         always @(posedge i_clk)
         if (i_reset)
             ce_phase <= 3'b011;
-        else if (i_ce)
+        else if (i_clk_enable)
             // New Data Arrived! Reset counter to 0.
             ce_phase <= 3'b000;
         else if (ce_phase != 3'b011)
@@ -511,7 +511,7 @@ module  hwbfly #(
         // The multiplier should run during phases 0, 1, and 2.
         // It stops when we hit phase 3 (Idle).
         always @(*)
-            mpy_pipe_v = (i_ce)||(ce_phase < 3'b010);
+            mpy_pipe_v = (i_clk_enable)||(ce_phase < 3'b010);
 
         // --------------------------------------------------------------------
         // E. Data Loading & Shifting
@@ -576,20 +576,20 @@ module  hwbfly #(
         // into separate registers at the exact right moment.
 
         // Capture P1 (Real * Real)
-        // P1 computation finishes first. It is available when i_ce is High.
+        // P1 computation finishes first. It is available when i_clk_enable is High.
         // Note: P1 is narrower than P3, so we only capture the needed bits.
         always @(posedge i_clk)
-        if(i_ce)
+        if(i_clk_enable)
             rp_one <= mpy_pipe_out[(CWIDTH+IWIDTH):0];
 
         // Capture P2 (Imag * Imag)
-        // P2 finishes next. It is available when the phase counter is 0 (1 clock after i_ce).
+        // P2 finishes next. It is available when the phase counter is 0 (1 clock after i_clk_enable).
         always @(posedge i_clk)
         if(ce_phase == 3'b000)
             rp_two <= mpy_pipe_out[(CWIDTH+IWIDTH):0];
 
         // Capture P3 (Sum * Sum)
-        // P3 finishes last. It is available when the phase counter is 1 (2 clocks after i_ce).
+        // P3 finishes last. It is available when the phase counter is 1 (2 clocks after i_clk_enable).
         // Note: P3 is wider (due to the pre-addition), so we capture the full width.
         always @(posedge i_clk)
         if(ce_phase == 3'b001)
@@ -600,10 +600,10 @@ module  hwbfly #(
         // ====================================================================
         // P1 was captured at T=0, P2 at T=1, P3 at T=2.
         // We cannot use them yet because they are misaligned in time.
-        // We wait for the next 'i_ce' (Start of Sample) to register them ALL together.
+        // We wait for the next 'i_clk_enable' (Start of Sample) to register them ALL together.
         
         always @(posedge i_clk)
-        if (i_ce)
+        if (i_clk_enable)
         begin
             rp2_one   <= rp_one;   // Align P1
             rp2_two   <= rp_two;   // Align P2
@@ -638,7 +638,7 @@ module  hwbfly #(
     // was sitting in the 'leftv/leftvv' delay line. Now we retrieve it.
     
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
         left_saved <= leftvv; // Retrieve the delayed Sum (L+R)
 
     // --- Scaling Logic ---
@@ -673,7 +673,7 @@ module  hwbfly #(
     begin
         left_saved <= 0;
         o_aux <= 1'b0;
-    end else if (i_ce)
+    end else if (i_clk_enable)
     begin
         // Recover Sum Path:
         // Retrieve the "Sum" (L+R) data from the delay line ('leftvv').
@@ -699,7 +699,7 @@ module  hwbfly #(
     // Imag Part = A*D + B*C  => P3 - P1 - P2
     
     always @(posedge i_clk)
-    if (i_ce)
+    if (i_clk_enable)
     begin
         // Calculate Real Part
         // w_one and w_two are the sign-extended versions of P1 and P2.
@@ -724,20 +724,20 @@ module  hwbfly #(
     // Shift: SHIFT+2. This accounts for the 1-bit growth in the first Add/Sub
     //        plus the alignment padding we added earlier.
     convround #(CWIDTH+IWIDTH+1, OWIDTH, SHIFT+2)
-        do_rnd_left_r(i_clk, i_ce, left_sr, rnd_left_r);
+        do_rnd_left_r(i_clk, i_clk_enable, left_sr, rnd_left_r);
 
     convround #(CWIDTH+IWIDTH+1, OWIDTH, SHIFT+2)
-        do_rnd_left_i(i_clk, i_ce, left_si, rnd_left_i);
+        do_rnd_left_i(i_clk, i_clk_enable, left_si, rnd_left_i);
 
     // --- Rounding the Diff Path (Bottom / Multiplier) ---
     // Inputs: mpy_r (Real), mpy_i (Imag)
     // Shift: SHIFT+4. This accounts for the massive bit growth during multiplication.
     //        We drop the extra fractional bits created by the Twiddle Factor.
     convround #(CWIDTH+IWIDTH+3, OWIDTH, SHIFT+4)
-        do_rnd_right_r(i_clk, i_ce, mpy_r, rnd_right_r);
+        do_rnd_right_r(i_clk, i_clk_enable, mpy_r, rnd_right_r);
 
     convround #(CWIDTH+IWIDTH+3, OWIDTH, SHIFT+4)
-        do_rnd_right_i(i_clk, i_ce, mpy_i, rnd_right_i);
+        do_rnd_right_i(i_clk, i_clk_enable, mpy_i, rnd_right_i);
 
     // ========================================================================
     // 11. FINAL OUTPUT PACKING
