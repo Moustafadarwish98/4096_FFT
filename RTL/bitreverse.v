@@ -195,5 +195,6 @@ module  bitreverse #(
     assign  o_out_0 = (adrz) ? odd_out_0 : evn_out_0;
     assign  o_out_1 = (adrz) ? odd_out_1 : evn_out_1;
 
+
 endmodule
 

@@ -1,0 +1,541 @@
+onerror {resume}
+quietly WaveActivateNextPane {} 0
+add wave -noupdate /tb_fftmain/i_clk
+add wave -noupdate /tb_fftmain/i_reset
+add wave -noupdate /tb_fftmain/i_clk_enable
+add wave -noupdate -group TB /tb_fftmain/i_left
+add wave -noupdate -group TB /tb_fftmain/i_right
+add wave -noupdate -group TB /tb_fftmain/o_left
+add wave -noupdate -group TB /tb_fftmain/o_right
+add wave -noupdate -group TB /tb_fftmain/o_sync
+add wave -noupdate -group TB /tb_fftmain/o_left_r
+add wave -noupdate -group TB /tb_fftmain/o_left_i
+add wave -noupdate -group TB /tb_fftmain/o_right_r
+add wave -noupdate -group TB /tb_fftmain/o_right_i
+add wave -noupdate -group TB /tb_fftmain/n
+add wave -noupdate -group TB /tb_fftmain/bin
+add wave -noupdate -group TB /tb_fftmain/k
+add wave -noupdate -group FFTmain /tb_fftmain/dut/i_left
+add wave -noupdate -group FFTmain /tb_fftmain/dut/i_right
+add wave -noupdate -group FFTmain /tb_fftmain/dut/o_left
+add wave -noupdate -group FFTmain /tb_fftmain/dut/o_right
+add wave -noupdate -group FFTmain /tb_fftmain/dut/o_sync
+add wave -noupdate -group FFTmain /tb_fftmain/dut/br_sync
+add wave -noupdate -group FFTmain /tb_fftmain/dut/br_left
+add wave -noupdate -group FFTmain /tb_fftmain/dut/br_right
+add wave -noupdate -group FFTmain /tb_fftmain/dut/w_s4096
+add wave -noupdate -group FFTmain /tb_fftmain/dut/w_os4096
+add wave -noupdate -group FFTmain /tb_fftmain/dut/w_e4096
+add wave -noupdate -group FFTmain /tb_fftmain/dut/w_o4096
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/i_sync
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/i_data
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/o_data
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/o_sync
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/wait_for_sync
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/ib_a
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/ib_b
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/ib_sync
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/b_started
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/ob_sync
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/ob_a
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/ob_b
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/iaddr
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/imem
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/oaddr
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/omem
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/nxt_oaddr
+add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/pre_ovalue
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/i_left
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/i_right
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/i_aux
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/o_left
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/o_right
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/o_aux
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_left
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_right
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_coef
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_coef_2
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_left_r
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_left_i
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_right_r
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_right_i
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_sum_r
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_sum_i
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_dif_r
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_dif_i
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_addr
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_read_addr
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_left
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_read
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_r
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_i
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/ir_coef_r
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/ir_coef_i
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/p_one
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/p_two
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/p_three
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/mpy_r
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/mpy_i
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_left_r
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_left_i
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_right_r
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_right_i
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/left_sr
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/left_si
+add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/aux_pipeline
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/i_left
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/i_right
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/i_aux
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/o_left
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/o_right
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/o_aux
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_left
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_right
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_coef
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_coef_2
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_left_r
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_left_i
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_right_r
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_right_i
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_sum_r
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_sum_i
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_dif_r
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_dif_i
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_addr
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_read_addr
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_left
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/ir_coef_r
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/ir_coef_i
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/p_one
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/p_two
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/p_three
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_i
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_r
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_read
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/mpy_r
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/mpy_i
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_left_r
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_left_i
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_right_r
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_right_i
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/left_sr
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/left_si
+add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/aux_pipeline
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/i_sync
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/i_data
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/o_data
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/o_sync
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/wait_for_sync
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/ib_a
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/ib_b
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/ib_c
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/ib_sync
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/b_started
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/ob_sync
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/ob_a
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/ob_b
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/cmem
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/iaddr
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/imem
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/oaddr
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/omem
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/nxt_oaddr
+add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/pre_ovalue
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/i_sync
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/i_data
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/o_data
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/o_sync
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/wait_for_sync
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/ib_a
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/ib_b
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/ib_sync
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/b_started
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/ob_sync
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/ob_a
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/ob_b
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/iaddr
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/imem
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/oaddr
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/omem
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/nxt_oaddr
+add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/pre_ovalue
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/i_sync
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/i_data
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/o_data
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/o_sync
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/wait_for_sync
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/ib_a
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/ib_b
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/ib_sync
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/b_started
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/ob_sync
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/ob_a
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/ob_b
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/iaddr
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/imem
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/oaddr
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/omem
+add wave -noupdate -group stage_o2048 /tb_fftmain/dut/stage_o2048/nxt_oaddr
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/i_sync
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/i_data
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/o_data
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/o_sync
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/wait_for_sync
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/ib_a
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/ib_b
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/ib_c
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/ib_sync
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/b_started
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/ob_sync
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/ob_a
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/ob_b
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/cmem
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/iaddr
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/imem
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/oaddr
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/omem
+add wave -noupdate -group stage_e1024 -radix unsigned /tb_fftmain/dut/stage_e1024/nxt_oaddr
+add wave -noupdate -group stage_e1024 /tb_fftmain/dut/stage_e1024/pre_ovalue
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/i_sync
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/i_data
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/o_data
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/o_sync
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/wait_for_sync
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/ib_a
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/ib_b
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/ib_sync
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/b_started
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/ob_sync
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/ob_a
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/ob_b
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/iaddr
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/imem
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/oaddr
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/omem
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/nxt_oaddr
+add wave -noupdate -group stage_o1024 /tb_fftmain/dut/stage_o1024/pre_ovalue
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/i_sync
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/i_data
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/o_data
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/o_sync
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/wait_for_sync
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/ib_a
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/ib_b
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/ib_sync
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/b_started
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/ob_sync
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/ob_a
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/ob_b
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/iaddr
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/imem
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/oaddr
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/omem
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/nxt_oaddr
+add wave -noupdate -group stage_e512 /tb_fftmain/dut/stage_e512/pre_ovalue
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/i_sync
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/i_data
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/o_data
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/o_sync
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/wait_for_sync
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/ib_a
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/ib_b
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/ib_sync
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/b_started
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/ob_sync
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/ob_a
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/ob_b
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/iaddr
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/imem
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/oaddr
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/omem
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/nxt_oaddr
+add wave -noupdate -group stage_0512 /tb_fftmain/dut/stage_o512/pre_ovalue
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/i_sync
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/i_data
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/o_data
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/o_sync
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/wait_for_sync
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/ib_a
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/ib_b
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/ib_sync
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/b_started
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/ob_sync
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/ob_a
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/ob_b
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/iaddr
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/imem
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/oaddr
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/omem
+add wave -noupdate -group stage_e128 -radix unsigned /tb_fftmain/dut/stage_e128/nxt_oaddr
+add wave -noupdate -group stage_e128 /tb_fftmain/dut/stage_e128/pre_ovalue
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/i_sync
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/i_data
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/o_data
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/o_sync
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/wait_for_sync
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/ib_a
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/ib_b
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/ib_sync
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/b_started
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/ob_sync
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/ob_a
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/ob_b
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/iaddr
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/imem
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/oaddr
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/omem
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/nxt_oaddr
+add wave -noupdate -group stage_o128 /tb_fftmain/dut/stage_o128/pre_ovalue
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/i_sync
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/i_data
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/o_data
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/o_sync
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/wait_for_sync
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/ib_a
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/ib_b
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/ib_sync
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/b_started
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/ob_sync
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/ob_a
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/ob_b
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/iaddr
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/imem
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/oaddr
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/omem
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/nxt_oaddr
+add wave -noupdate -group stage_e64 /tb_fftmain/dut/stage_e64/pre_ovalue
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/i_sync
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/i_data
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/o_data
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/o_sync
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/wait_for_sync
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/ib_a
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/ib_b
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/ib_sync
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/b_started
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/ob_sync
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/ob_a
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/ob_b
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/iaddr
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/imem
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/oaddr
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/omem
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/nxt_oaddr
+add wave -noupdate -group stage_o64 /tb_fftmain/dut/stage_o64/pre_ovalue
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/i_sync
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/i_data
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/o_data
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/o_sync
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/wait_for_sync
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/ib_a
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/ib_b
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/ib_sync
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/b_started
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/ob_sync
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/ob_a
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/ob_b
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/iaddr
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/imem
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/oaddr
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/omem
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/nxt_oaddr
+add wave -noupdate -group stage_e32 /tb_fftmain/dut/stage_e32/pre_ovalue
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/i_sync
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/i_data
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/o_data
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/o_sync
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/wait_for_sync
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/ib_a
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/ib_b
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/ib_sync
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/b_started
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/ob_sync
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/ob_a
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/ob_b
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/iaddr
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/imem
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/oaddr
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/omem
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/nxt_oaddr
+add wave -noupdate -group stage_o32 /tb_fftmain/dut/stage_o32/pre_ovalue
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/i_sync
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/i_data
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/o_data
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/o_sync
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/wait_for_sync
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/ib_a
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/ib_b
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/ib_sync
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/b_started
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/ob_sync
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/ob_a
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/ob_b
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/iaddr
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/imem
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/oaddr
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/omem
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/nxt_oaddr
+add wave -noupdate -group stage_e16 /tb_fftmain/dut/stage_e16/pre_ovalue
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/i_sync
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/i_data
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/o_data
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/o_sync
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/wait_for_sync
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/ib_a
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/ib_b
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/ib_sync
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/b_started
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/ob_sync
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/ob_a
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/ob_b
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/iaddr
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/imem
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/oaddr
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/omem
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/nxt_oaddr
+add wave -noupdate -group stage_o16 /tb_fftmain/dut/stage_o16/pre_ovalue
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/i_sync
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/i_data
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/o_data
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/o_sync
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/wait_for_sync
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/ib_a
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/ib_b
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/ib_sync
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/b_started
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/ob_sync
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/ob_a
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/ob_b
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/iaddr
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/imem
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/oaddr
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/omem
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/nxt_oaddr
+add wave -noupdate -group stage_e8 /tb_fftmain/dut/stage_e8/pre_ovalue
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/i_sync
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/i_data
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/o_data
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/o_sync
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/wait_for_sync
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/ib_a
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/ib_b
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/ib_sync
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/b_started
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/ob_sync
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/ob_a
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/ob_b
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/iaddr
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/imem
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/oaddr
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/omem
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/nxt_oaddr
+add wave -noupdate -group stage_o8 /tb_fftmain/dut/stage_o8/pre_ovalue
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/i_sync
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/i_data
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/o_data
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/o_sync
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/wait_for_sync
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/pipeline
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/sum_r
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/sum_i
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/diff_r
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/diff_i
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/ob_a
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/ob_b
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/ob_b_r
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/ob_b_i
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/iaddr
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/imem
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/imem_r
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/imem_i
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/i_data_r
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/i_data_i
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/omem
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/rnd_sum_r
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/rnd_sum_i
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/rnd_diff_r
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/rnd_diff_i
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/n_rnd_diff_r
+add wave -noupdate -group stage_e4 /tb_fftmain/dut/stage_e4/n_rnd_diff_i
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/i_sync
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/i_data
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/o_data
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/o_sync
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/wait_for_sync
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/pipeline
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/sum_r
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/sum_i
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/diff_r
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/diff_i
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/ob_a
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/ob_b
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/ob_b_r
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/ob_b_i
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/iaddr
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/imem
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/imem_r
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/imem_i
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/i_data_r
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/i_data_i
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/omem
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/rnd_sum_r
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/rnd_sum_i
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/rnd_diff_r
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/rnd_diff_i
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/n_rnd_diff_r
+add wave -noupdate -group stage_o4 /tb_fftmain/dut/stage_o4/n_rnd_diff_i
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/i_sync
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/i_left
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/i_right
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/o_left
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/o_right
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/o_sync
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/i_in_0r
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/i_in_0i
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/i_in_1r
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/i_in_1i
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/o_out_0r
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/o_out_0i
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/o_out_1r
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/o_out_1i
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/rnd_sync
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/r_sync
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/rnd_in_0r
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/rnd_in_0i
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/rnd_in_1r
+add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/rnd_in_1i
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/i_in_0
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/i_in_1
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/o_out_0
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/o_out_1
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/o_sync
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/iaddr
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/braddr
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/mem_e
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/mem_o
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/evn_out_0
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/evn_out_1
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/odd_out_0
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/odd_out_1
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/r_out_0
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/r_out_1
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/adrz
+add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/mem_valid
+TreeUpdate [SetDefaultTree]
+WaveRestoreCursors {{Cursor 1} {241025571 ps} 0}
+quietly wave cursor active 1
+configure wave -namecolwidth 150
+configure wave -valuecolwidth 100
+configure wave -justifyvalue left
+configure wave -signalnamewidth 1
+configure wave -snapdistance 10
+configure wave -datasetprefix 0
+configure wave -rowmargin 4
+configure wave -childrowmargin 2
+configure wave -gridoffset 0
+configure wave -gridperiod 1
+configure wave -griddelta 40
+configure wave -timeline 0
+configure wave -timelineunits ps
+update
+WaveRestoreZoom {240940176 ps} {241182096 ps}

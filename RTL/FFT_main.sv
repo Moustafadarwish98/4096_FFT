@@ -70,6 +70,18 @@ module fftmain(
   wire  [25:0]      w_e4096, w_o4096; // Intermediate Data: 13 bits Real + 13 bits Imag = 26 bits
                                       // Note: Output width grew from 12 to 13 bits.
 
+  // debug
+  reg start_sync;
+
+always @(posedge i_clk) begin
+  if (i_reset)
+    start_sync <= 1'b0;
+  else
+    start_sync <= 1'b1;
+end
+
+  //
+
   // --- Path 1 (Left/Even Stream) ---
   fftstage  #(
              .IWIDTH(IWIDTH),         // Input: 12 bits
@@ -88,7 +100,7 @@ module fftmain(
              .i_clk(i_clk),
              .i_reset(i_reset),
              .i_clk_enable(i_clk_enable),
-             .i_sync(!i_reset),       // Sync starts high or toggles
+             .i_sync(start_sync),       // Sync starts high or toggles
              .i_data(i_left),         // Input: Left Stream
              .o_data(w_e4096),        // Output: To next stage
              .o_sync(w_s4096)         // Sync passed down the line
@@ -108,7 +120,7 @@ module fftmain(
              .i_clk(i_clk),
              .i_reset(i_reset),
              .i_clk_enable(i_clk_enable),
-             .i_sync(!i_reset),
+             .i_sync(start_sync),       // Sync starts high or toggles
              .i_data(i_right),        // Input: Right Stream
              .o_data(w_o4096),
              .o_sync(w_os4096)
@@ -624,6 +636,7 @@ module fftmain(
               .o_left(w_e2), .o_right(w_o2),
               .o_sync(w_s2)
              );
+             
   // ==========================================================================
   // BIT REVERSAL: Reordering the Output
   // ==========================================================================
@@ -657,7 +670,12 @@ module fftmain(
                  .o_out_1(br_right),  // Odd sample output (Ordered)
                  .o_sync(br_sync)     // Frame sync for downstream IP
                 );
+                //
+                assign br_left  = w_e2;
+assign br_right = w_o2;
+assign br_sync  = w_s2;
 
+                //
   // ==========================================================================
   // FINAL OUTPUT REGISTRATION
   // ==========================================================================
@@ -674,4 +692,5 @@ module fftmain(
       o_left  <= br_left;
       o_right <= br_right;
     end
+      
 endmodule
