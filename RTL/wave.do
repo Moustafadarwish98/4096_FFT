@@ -3,18 +3,25 @@ quietly WaveActivateNextPane {} 0
 add wave -noupdate /tb_fftmain/i_clk
 add wave -noupdate /tb_fftmain/i_reset
 add wave -noupdate /tb_fftmain/i_clk_enable
-add wave -noupdate -group TB /tb_fftmain/i_left
-add wave -noupdate -group TB /tb_fftmain/i_right
-add wave -noupdate -group TB /tb_fftmain/o_left
-add wave -noupdate -group TB /tb_fftmain/o_right
-add wave -noupdate -group TB /tb_fftmain/o_sync
-add wave -noupdate -group TB /tb_fftmain/o_left_r
-add wave -noupdate -group TB /tb_fftmain/o_left_i
-add wave -noupdate -group TB /tb_fftmain/o_right_r
-add wave -noupdate -group TB /tb_fftmain/o_right_i
-add wave -noupdate -group TB /tb_fftmain/n
-add wave -noupdate -group TB /tb_fftmain/bin
-add wave -noupdate -group TB /tb_fftmain/k
+add wave -noupdate -expand -group TB /tb_fftmain/i_reset
+add wave -noupdate -expand -group TB /tb_fftmain/i_clk_enable
+add wave -noupdate -expand -group TB /tb_fftmain/fout
+add wave -noupdate -expand -group TB /tb_fftmain/dut/br_start
+add wave -noupdate -expand -group TB /tb_fftmain/frame_active
+add wave -noupdate -expand -group TB /tb_fftmain/i_left
+add wave -noupdate -expand -group TB /tb_fftmain/i_right
+add wave -noupdate -expand -group TB /tb_fftmain/o_left
+add wave -noupdate -expand -group TB /tb_fftmain/o_right
+add wave -noupdate -expand -group TB /tb_fftmain/o_sync
+add wave -noupdate -expand -group TB /tb_fftmain/dut/br_sync
+add wave -noupdate -expand -group TB /tb_fftmain/o_left_r
+add wave -noupdate -expand -group TB /tb_fftmain/o_left_i
+add wave -noupdate -expand -group TB /tb_fftmain/o_right_r
+add wave -noupdate -expand -group TB /tb_fftmain/o_right_i
+add wave -noupdate -expand -group TB /tb_fftmain/mag_left
+add wave -noupdate -expand -group TB /tb_fftmain/mag_right
+add wave -noupdate -expand -group TB /tb_fftmain/k
+add wave -noupdate -expand -group TB -radix unsigned /tb_fftmain/bin
 add wave -noupdate -group FFTmain /tb_fftmain/dut/i_left
 add wave -noupdate -group FFTmain /tb_fftmain/dut/i_right
 add wave -noupdate -group FFTmain /tb_fftmain/dut/o_left
@@ -504,25 +511,24 @@ add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/rnd_in_0r
 add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/rnd_in_0i
 add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/rnd_in_1r
 add wave -noupdate -group {stage2(Last stage)} /tb_fftmain/dut/stage_2/rnd_in_1i
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/i_in_0
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/i_in_1
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/o_out_0
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/o_out_1
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/o_sync
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/iaddr
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/braddr
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/mem_e
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/mem_o
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/evn_out_0
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/evn_out_1
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/odd_out_0
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/odd_out_1
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/r_out_0
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/r_out_1
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/adrz
-add wave -noupdate -expand -group bitrev /tb_fftmain/dut/revstage/mem_valid
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/i_clk_enable
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/i_in_0
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/i_in_1
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/o_out_0
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/o_out_1
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/o_sync
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/in_reset
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/iaddr
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/braddr
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/mem_e
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/mem_o
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/evn_out_0
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/evn_out_1
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/odd_out_0
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/odd_out_1
+add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/adrz
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {241025571 ps} 0}
+WaveRestoreCursors {{Cursor 1} {83747300 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -538,4 +544,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {240940176 ps} {241182096 ps}
+WaveRestoreZoom {83565176 ps} {83807096 ps}

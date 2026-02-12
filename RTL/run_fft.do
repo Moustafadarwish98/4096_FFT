@@ -5,7 +5,6 @@ vlog \
   bimpy.v \
   longbimpy.v \
   original_butterfly.sv \
-  hwbfly.v \
   qtrstage.sv \
   laststage.sv \
   FFT_stage.sv \
