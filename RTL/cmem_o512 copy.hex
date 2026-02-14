@@ -1,0 +1,78 @@
+// Coefficient memory
+// ----------------------------------------------
+//   Stage:               256
+//   Bits per coefficient: 19
+//   NWide:                 2 Double-wide FFT, two samples per clock
+//   Offset:                1 (Odd coefficients
+//   Inv:               False -- This is a forward FFT
+//
+//
+// Each line contains a coefficient.  The real portion
+// of the coefficient is in the upper 19 bits, whereas
+// the lower 19 bits contain the imaginary portion
+//
+//
+0ffecff36f
+0ff4efda56
+0fe137c153
+0fc3b7a878
+0f9c7f8fd2
+0f6ba77771
+0f314f5f65
+0eed8f47bc
+0ea09f3084
+0e4aaf19cd
+0debe703a3
+0d848eee15
+0d14d6d930
+0c9d16c500
+0c1d8eb193
+0b968e9ef5
+0b085e8d2f
+0a736e7c4f
+09d8066c5e
+0936865d66
+088f5e4f6f
+07e2ee4284
+07319e36ab
+067be62bed
+05c226224f
+0504de19d7
+04447e128c
+0381760c71
+02bc46078a
+01f56e03da
+012d560163
+00648e0027
+3f9b7e0027
+3ed2b60163
+3e0a9e03da
+3d43c6078a
+3c7e960c71
+3bbb8e128c
+3afb2e19d7
+3a3de6224f
+3984262bed
+38ce6e36ab
+381d1e4284
+3770ae4f6f
+36c9865d66
+3628066c5e
+358c9e7c4f
+34f7ae8d2f
+34697e9ef5
+33e27eb193
+3362f6c500
+32eb36d930
+327b7eee15
+32142703a3
+31b55f19cd
+315f6f3084
+31127f47bc
+30cebf5f65
+3094677771
+30638f8fd2
+303c57a878
+301ed7c153
+300b1fda56
+30013ff36f

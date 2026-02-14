@@ -5,7 +5,6 @@
 //  2. When the (N/2)-th sample arrives, the butterfly operation triggers:
 //       Output 1: x[n] + x[n+N/2]
 //       Output 2: (x[n] - x[n+N/2]) * TwiddleFactor
-//  Ref: Paper Section IV.A describes this SDF structure[cite: 594].
 
 `default_nettype    none
 
@@ -209,29 +208,27 @@ module  fftstage #(
   // to avoid multipliers, you would modify the 'butterfly' or 'hwbfly' modules
   // directly to detect trivial twiddles (1, -1, j, -j) and bypass the DSPs.
 
-  generate if (!OPT_HWMPY)
-    begin : FWBFLY
-      // ----------------------------------------------------------------------
-      // Logic-Based Version (LUTs)
-      // ----------------------------------------------------------------------
-      // Implements multiplication using standard logic gates.
-      // Slower and larger area, but useful if you run out of DSPs.
-      butterfly #(
-                  .IWIDTH(IWIDTH),
-                  .CWIDTH(CWIDTH),
-                  .OWIDTH(OWIDTH),
-                  .CKPCE(CKPCE),
-                  .SHIFT(BFLYSHIFT)
-                ) bfly(
-                  .i_clk(i_clk), .i_reset(i_reset), .i_clk_enable(i_clk_enable),
-                  .i_coef(ib_c),
-                  .i_left(ib_a),
-                  .i_right(ib_b),
-                  .i_aux(ib_sync),
-                  .o_left(ob_a), .o_right(ob_b), .o_aux(ob_sync)
-                );
-    end
-  endgenerate
+
+  // ----------------------------------------------------------------------
+  // Logic-Based Version (LUTs)
+  // ----------------------------------------------------------------------
+  // Implements multiplication using standard logic gates.
+  // Slower and larger area, but useful if you run out of DSPs.
+  butterfly #(
+              .IWIDTH(IWIDTH),
+              .CWIDTH(CWIDTH),
+              .OWIDTH(OWIDTH),
+              .CKPCE(CKPCE),
+              .SHIFT(BFLYSHIFT)
+            ) bfly(
+              .i_clk(i_clk), .i_reset(i_reset), .i_clk_enable(i_clk_enable),
+              .i_coef(ib_c),
+              .i_left(ib_a),
+              .i_right(ib_b),
+              .i_aux(ib_sync),
+              .o_left(ob_a), .o_right(ob_b), .o_aux(ob_sync)
+            );
+
   // ==========================================================================
   // 2. OUTPUT ADDRESSING & CONTROL (SDF Scheduling)
   // ==========================================================================

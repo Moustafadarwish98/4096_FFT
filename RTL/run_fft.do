@@ -2,8 +2,8 @@ vlib work
 
 vlog \
   convround.sv \
-  bimpy.v \
-  longbimpy.v \
+  bimpy.sv \
+  longbimpy.sv \
   original_butterfly.sv \
   qtrstage.sv \
   laststage.sv \

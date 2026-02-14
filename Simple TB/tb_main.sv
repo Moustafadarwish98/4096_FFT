@@ -13,7 +13,7 @@ module tb_fftmain;
   reg i_clk = 0;
   reg i_reset;
   reg i_clk_enable;
-integer out_count;
+  integer out_count;
 
   integer fout;
 
@@ -50,29 +50,97 @@ integer out_count;
   integer k;
   integer bin;
 
-always @(posedge i_clk)
-begin
-  if (i_reset)
+  always @(posedge i_clk)
   begin
-    out_count <= 0;
-    frame_active <= 0;
-  end
-  else if (i_clk_enable)
-  begin
-    if (dut.br_sync)
+    if (i_reset)
     begin
-      frame_active <= 1'b1;
       out_count <= 0;
-      bin <= 0;
-      $display("\n=== FFT FRAME START ===");
+      frame_active <= 0;
     end
-    else if (frame_active)
+    else if (i_clk_enable)
     begin
-      out_count <= out_count + 2;  // L + R
-      bin <= bin + 2;
+      if (dut.br_sync)
+      begin
+        frame_active <= 1'b1;
+        out_count <= 0;
+        bin <= 0;
+        $display("\n=== FFT FRAME START ===");
+      end
+      else if (frame_active)
+      begin
+        out_count <= out_count + 2;  // L + R
+        bin <= bin + 2;
+      end
     end
   end
-end
+    // ============================================================
+  // LATENCY MEASUREMENT
+  // ============================================================
+    integer core_latency;
+  integer br_latency;
+  integer total_latency;
+
+  integer core_counter;
+  integer br_counter;
+
+  reg core_measured;
+  reg br_measured;
+
+  always @(posedge i_clk)
+  begin
+    if (i_reset)
+    begin
+      core_counter   <= 0;
+      br_counter     <= 0;
+      core_measured  <= 0;
+      br_measured    <= 0;
+    end
+    else if (i_clk_enable)
+    begin
+      // --------------------------------------------------------
+      // Count cycles before CORE FFT produces valid output
+      // --------------------------------------------------------
+      if (!core_measured)
+      begin
+        core_counter <= core_counter + 1;
+
+        if (dut.w_s2)   // Last FFT stage sync (before bit reversal)
+        begin
+          core_latency  <= core_counter;
+          core_measured <= 1'b1;
+
+          $display("\n------------------------------------------------");
+          $display("CORE FFT LATENCY:");
+          $display("Time to Laststage Output: %0d cycles", core_counter);
+          $display("------------------------------------------------\n");
+        end
+      end
+
+      // --------------------------------------------------------
+      // Count cycles before BIT REVERSAL produces valid output
+      // --------------------------------------------------------
+      if (core_measured && !br_measured)
+      begin
+        br_counter <= br_counter + 1;
+
+        if (dut.br_sync)   // Bit-reversed output sync
+        begin
+          br_latency  <= br_counter;
+          total_latency <= core_latency + br_counter;
+          br_measured <= 1'b1;
+
+          $display("\n------------------------------------------------");
+          $display("BIT REVERSAL LATENCY:");
+          $display("Time from Laststage to BR Output: %0d cycles", br_counter);
+          $display("------------------------------------------------");
+
+          $display("TOTAL LATENCY:");
+          $display("Input to Final Output: %0d cycles", core_latency + br_counter);
+          $display("------------------------------------------------\n");
+        end
+      end
+    end
+  end
 
 
 
@@ -147,31 +215,31 @@ end
     i_left  <= 0;
     i_right <= 0;
 
-$display("Input frame complete.");
+    $display("Input frame complete.");
 
   end
 
   // ============================================================
   // OUTPUT MONITOR
   // ============================================================
-always @(posedge i_clk)
-begin
-  if (i_clk_enable && frame_active)
+  always @(posedge i_clk)
   begin
-    if (out_count < N)
+    if (i_clk_enable && frame_active)
     begin
-      $fwrite(fout,"%0d,%0d,%0d\n", bin,   o_left_r,  o_left_i);
-      $fwrite(fout,"%0d,%0d,%0d\n", bin+1, o_right_r, o_right_i);
-    end
+      if (out_count < N)
+      begin
+        $fwrite(fout,"%0d,%0d,%0d\n", bin,   o_left_r,  o_left_i);
+        $fwrite(fout,"%0d,%0d,%0d\n", bin+1, o_right_r, o_right_i);
+      end
 
-    if (out_count >= N-2)
-    begin
-      $display("End of FFT frame captured.");
-      $fclose(fout);
-      $finish;
+      if (out_count >= N-2)
+      begin
+        $display("End of FFT frame captured.");
+        $fclose(fout);
+        $finish;
+      end
     end
   end
-end
 
 
   // ============================================================
@@ -181,7 +249,7 @@ end
     real r;
     begin
       r = $cos(2.0 * 3.141592653589793 * TONE_BIN * idx / N);
-      cos_lut = $rtoi(r * 2047.0); 
+      cos_lut = $rtoi(r * 2047.0);
 
     end
   endfunction

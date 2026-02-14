@@ -3,25 +3,25 @@ quietly WaveActivateNextPane {} 0
 add wave -noupdate /tb_fftmain/i_clk
 add wave -noupdate /tb_fftmain/i_reset
 add wave -noupdate /tb_fftmain/i_clk_enable
-add wave -noupdate -expand -group TB /tb_fftmain/i_reset
-add wave -noupdate -expand -group TB /tb_fftmain/i_clk_enable
-add wave -noupdate -expand -group TB /tb_fftmain/fout
-add wave -noupdate -expand -group TB /tb_fftmain/dut/br_start
-add wave -noupdate -expand -group TB /tb_fftmain/frame_active
-add wave -noupdate -expand -group TB /tb_fftmain/i_left
-add wave -noupdate -expand -group TB /tb_fftmain/i_right
-add wave -noupdate -expand -group TB /tb_fftmain/o_left
-add wave -noupdate -expand -group TB /tb_fftmain/o_right
-add wave -noupdate -expand -group TB /tb_fftmain/o_sync
-add wave -noupdate -expand -group TB /tb_fftmain/dut/br_sync
-add wave -noupdate -expand -group TB /tb_fftmain/o_left_r
-add wave -noupdate -expand -group TB /tb_fftmain/o_left_i
-add wave -noupdate -expand -group TB /tb_fftmain/o_right_r
-add wave -noupdate -expand -group TB /tb_fftmain/o_right_i
-add wave -noupdate -expand -group TB /tb_fftmain/mag_left
-add wave -noupdate -expand -group TB /tb_fftmain/mag_right
-add wave -noupdate -expand -group TB /tb_fftmain/k
-add wave -noupdate -expand -group TB -radix unsigned /tb_fftmain/bin
+add wave -noupdate -group TB /tb_fftmain/i_reset
+add wave -noupdate -group TB /tb_fftmain/i_clk_enable
+add wave -noupdate -group TB /tb_fftmain/fout
+add wave -noupdate -group TB /tb_fftmain/dut/br_start
+add wave -noupdate -group TB /tb_fftmain/frame_active
+add wave -noupdate -group TB /tb_fftmain/i_left
+add wave -noupdate -group TB /tb_fftmain/i_right
+add wave -noupdate -group TB /tb_fftmain/o_left
+add wave -noupdate -group TB /tb_fftmain/o_right
+add wave -noupdate -group TB /tb_fftmain/o_sync
+add wave -noupdate -group TB /tb_fftmain/dut/br_sync
+add wave -noupdate -group TB /tb_fftmain/o_left_r
+add wave -noupdate -group TB /tb_fftmain/o_left_i
+add wave -noupdate -group TB /tb_fftmain/o_right_r
+add wave -noupdate -group TB /tb_fftmain/o_right_i
+add wave -noupdate -group TB /tb_fftmain/mag_left
+add wave -noupdate -group TB /tb_fftmain/mag_right
+add wave -noupdate -group TB /tb_fftmain/k
+add wave -noupdate -group TB -radix unsigned /tb_fftmain/bin
 add wave -noupdate -group FFTmain /tb_fftmain/dut/i_left
 add wave -noupdate -group FFTmain /tb_fftmain/dut/i_right
 add wave -noupdate -group FFTmain /tb_fftmain/dut/o_left
@@ -52,82 +52,6 @@ add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/oaddr
 add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/omem
 add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/nxt_oaddr
 add wave -noupdate -group stage_e4096 /tb_fftmain/dut/stage_e4096/pre_ovalue
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/i_left
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/i_right
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/i_aux
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/o_left
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/o_right
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/o_aux
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_left
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_right
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_coef
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_coef_2
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_left_r
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_left_i
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_right_r
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_right_i
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_sum_r
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_sum_i
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_dif_r
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_dif_i
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_addr
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_read_addr
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_left
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_read
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_r
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_i
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/ir_coef_r
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/ir_coef_i
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/p_one
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/p_two
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/p_three
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/mpy_r
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/mpy_i
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_left_r
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_left_i
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_right_r
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_right_i
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/left_sr
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/left_si
-add wave -noupdate -group BFLY /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/aux_pipeline
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/i_left
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/i_right
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/i_aux
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/o_left
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/o_right
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/o_aux
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_left
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_right
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_coef
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_coef_2
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_left_r
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_left_i
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_right_r
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_right_i
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_sum_r
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_sum_i
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_dif_r
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/r_dif_i
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_addr
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_read_addr
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_left
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/ir_coef_r
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/ir_coef_i
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/p_one
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/p_two
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/p_three
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_i
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_r
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/fifo_read
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/mpy_r
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/mpy_i
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_left_r
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_left_i
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_right_r
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/rnd_right_i
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/left_sr
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/left_si
-add wave -noupdate -group org_bfly /tb_fftmain/dut/stage_e4096/FWBFLY/bfly/aux_pipeline
 add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/i_sync
 add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/i_data
 add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/o_data
@@ -148,6 +72,51 @@ add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/oaddr
 add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/omem
 add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/nxt_oaddr
 add wave -noupdate -group stage_04096 /tb_fftmain/dut/stage_o4096/pre_ovalue
+add wave -noupdate -group Stage4096_BFLY -radix unsigned /tb_fftmain/dut/stage_e4096/bfly/MAXMPYBITS
+add wave -noupdate -group Stage4096_BFLY -radix unsigned /tb_fftmain/dut/stage_e4096/bfly/LCLDELAY
+add wave -noupdate -group Stage4096_BFLY -radix unsigned /tb_fftmain/dut/stage_e4096/bfly/LGDELAY
+add wave -noupdate -group Stage4096_BFLY -radix unsigned /tb_fftmain/dut/stage_e4096/bfly/BFLYLATENCY
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/i_coef
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/i_left
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/i_right
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/i_aux
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/o_left
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/o_right
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/o_aux
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/r_left
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/r_right
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/r_coef
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/r_coef_2
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/r_left_r
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/r_left_i
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/r_right_r
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/r_right_i
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/r_sum_r
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/r_sum_i
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/r_dif_r
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/r_dif_i
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/fifo_addr
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/fifo_read_addr
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/fifo_left
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/fifo_read
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/fifo_r
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/fifo_i
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/ir_coef_r
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/ir_coef_i
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/p_one
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/p_two
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/p_three
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/mpy_r
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/mpy_i
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/rnd_left_r
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/rnd_left_i
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/rnd_right_r
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/rnd_right_i
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/left_sr
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/left_si
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/aux_pipeline
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/p3c_in
+add wave -noupdate -group Stage4096_BFLY /tb_fftmain/dut/stage_e4096/bfly/p3d_in
 add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/i_sync
 add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/i_data
 add wave -noupdate -group stage_e2048 /tb_fftmain/dut/stage_e2048/o_data
@@ -528,7 +497,7 @@ add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/odd_out_0
 add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/odd_out_1
 add wave -noupdate -group Bit_Rev /tb_fftmain/dut/revstage/adrz
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {83747300 ps} 0}
+WaveRestoreCursors {{Cursor 1} {63275000 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -544,4 +513,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {83565176 ps} {83807096 ps}
+WaveRestoreZoom {63065176 ps} {63307096 ps}
