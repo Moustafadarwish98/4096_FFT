@@ -132,3 +132,30 @@ module  convround(i_clk, i_clk_enable, i_val, o_val);
     end
     endgenerate
 endmodule
+/*
+CASE 1: Pass-Through (NO_ROUNDING)
+The Formula: IWID == OWID
+What it means: Your input and output widths are exactly the same. The hardware will ignore the SHIFT parameter completely and just wire the input straight to the output flip-flops.
+How to trigger it: Make the first two parameters identical.
+
+CASE 2: Sign Extension (ADD_BITS_TO_OUTPUT)
+The Formula: (IWID - SHIFT) < OWID
+What it means: After you apply your shift, the data you have left is actually smaller than your target output width. The hardware needs to pad the missing upper bits with the sign bit to preserve the value.
+How to trigger it: Make your output width larger than your input width minus the shift.
+
+CASE 3: Exact Truncation (SHIFT_ONE_BIT)
+The Formula: (IWID - SHIFT) == OWID
+What it means: You are throwing away exactly SHIFT number of bits, and the bits that remain fit perfectly into your output width. Because there are no fractional bits left over to round, the hardware just truncates the bottom bits.
+How to trigger it: Ensure the input width minus the shift equals the exact output width.
+
+CASE 4: Dropping Exactly 1 Bit (DROP_ONE_BIT)
+The Formula: (IWID - SHIFT - 1) == OWID
+What it means: After shifting, you have exactly one bit more than your output can hold. That single extra bit is the 0.5 fractional mark. The hardware will build the logic to look at that one bit and round to the nearest even number.
+How to trigger it: Set the parameters so that IWID - SHIFT is exactly 1 greater than OWID.
+
+CASE 5: Dropping Multiple Bits (ROUND_RESULT)
+The Formula: The else block. Mathematically: (IWID - SHIFT - 1) > OWID
+What it means: After shifting, you have two or more extra bits that won't fit in the output. This is the heavy DSP block.
+The hardware will take the highest dropped bit as the "Guard" (0.5) bit, and OR-reduce all the bits below it into a single "Sticky" bit to determine how to do the convergent rounding.
+How to trigger it: Set the parameters so the remaining bits are at least 2 sizes larger than the output.
+*/
